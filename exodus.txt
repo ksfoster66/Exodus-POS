@@ -1,0 +1,153 @@
+Exodus:
+	A POS, order management, and inventory management system
+	
+Necessary functions:
+	
+	Client-Server. Centralized server hooked to many cients. Central server hosts and processes all information, clients simply perform look ups on and calls to the server
+	
+	Process sales and returns. 
+	
+	Track inventory, stock orders,
+	
+	Keep track of current sales and past orders
+	
+COMPONENT SYSTEMS AND NECESSARY DETAILS:
+	A: Inventory: keeps track of all items in the store, with the ability to add new items and remove items from the store.
+		Track item on hand quantities.
+		Track damaged item quantities
+		Track due item quantities
+		Add items.
+		Remove items.
+		Flag items as damaged
+		Order items from supplier
+		Be able to enter order information from supplier
+		Be able to check when items are arriving from supplier
+		Items have stock codes: Available, clearance, discontinued, special, recall
+		Items must have a MSRP, cost, and sale price.
+		If the the item is on sale it is adjusted in the sale price, otherwise sale price is the same as the MSRP
+		When an item is clearanced the sale price is adjusted by management to the appropriate price
+		Items have a name, description, type, and department
+		Items can be searched by their type, name, and department.
+		Be able to adjust counts for errors.
+		All items will have a unique UPC number to scan for check out.
+		All items will have a unique item number to search for.
+		
+	
+	B: Sales
+		Process transactions
+		Modify inventory as necessary
+		Generate orders as needed
+		Handle all relevant payment options
+		Be able to split payments.
+		Items can be entered into the sale by either scanning or entering the UPC number
+		Items can be entered into the sale by entering the item number
+		Each item in the sale can have it's quantity adjustable.
+		Each item can have it's price changed.
+		Price changes greater than 5% of sale price must be approved by a manager.
+	
+	C: Orders
+		Track what has been purchased but not delivered
+		Generate special supplier orders as necessary.
+		Split special orders according to supplier and date recieved.
+		Can be delivery or pick up.
+		Delivery dates can be changed, according to availability
+		Orders have a comments section for any additional information to be added
+		
+			C1: Customer Orders
+				Orders to fulfill sales to customers for items not normally carried in store
+				These orders are assigned to a customer and an employee.
+			
+			C2: Inventory Orders
+				Orders to fulfill inventory requirements and needs
+				Orders are not assigned but are processed by whomever recieves the order in the store.
+	
+	D: Reports
+		Generate reports based on information from the other systems.
+		Sales report
+		Order report
+		Employee report
+	
+	E: Customer Management
+		Add customers
+		Edit customers information
+		Remove customers.
+		Customers can only be removed if they have no pending orders
+		Customers can only be removed if they had no purchases in the last 3 months.
+	
+	F: Employee Management
+		Add employees
+		There are two types of employees, sales and manager.
+		Managers can edit employee information
+		All employees have a sales number.
+		All employees have a password
+		Employees must login to the system to use it.
+		System times out and logs employees out after 15 minutes of non-use
+		An employees password can be reset by a manager
+		Employees can track their sold orders
+		Managers have a special code for approvals
+		
+			F1: Sales
+				Regular employees
+				
+			F2: Managers
+				Management employees
+				Have power to add employees, can approve changes in the system that need higher approval.
+	
+Required data structures:
+	Client: Terminals that are run by the users
+	
+	
+	Server: Central system containing all information
+	
+	Employee:
+		TYPES: Associate, Manager
+		Name - Employees name
+		Sales ID - EMployees sales number, used to login
+		password - Employees password
+		Orders - A reference to orders entered by the employee
+		Total Sales - total value of sales made by the employee
+		Total Margin - total margin of the employee
+	
+	items
+		required fields:
+			UPC Code:Int - The UPC code of the item
+			ID Number:Int - In house id number for item
+			Model number:String - The model number of the item.
+			Item name:String - Item's name
+			Descrition:String - Brief description of the item. Optional
+			Type:String - The type of item. IE: Lumber, Toilet, Refrigerator, etc
+			Department:String - THe department the item is assigned to.
+			Stock type:String - The stock type of the item: Available, Clearance, Discontinued, Special
+			Supplier:String - The supplier or manufacturer of the item.
+			TotalCount:Int - Total number of the item physically in the store
+			Available:Int - Number available to sell.
+			Damaged:Int - Number damaged in the store
+			TotalSold:Int - Number of items sold in the current fiscal period
+			PendingSold:Int - Number sold, but yet to be delivered
+			TotalOrdered:Int - Number ordered from the supplier
+			Price:Int - Current selling price of the item
+			MSRP:Int - suggested selling price from the supplier
+			Cost:Int - The cost of the item for the store
+	
+	customers
+		Name - Customers name
+		Phone Number - Customers phone name
+		Address - Customers address
+		Account Number - customers account number
+		Orders - Reference to orders placed by the customer
+	
+	orders
+		Order Number
+		Items- Items to be delivered
+		Quantities - Quantities of the items to be delivered
+		Date Sold - Date that the order was sold
+		Date Delivered - Date that the items were/will be delivered
+		Customer - A reference to the customer that purchased the order
+		Salesman - A reference to the employee that sold the order
+		related - Reference to related orders
+		Delivery address - Address to be delivered to, can be different than the customers normal address
+		Contact number - Number to contacted regarding the orders
+	
+	
+Interactions between systems
+	When the sales system successfully completes a sale it posts the update to the inventory system, creates an order, assigns the order to the relevant customer and employee. Employees can input sales, check inventory, check orders, create and edit customers. Employees that are managers can add and remove employees, and remove customers.
