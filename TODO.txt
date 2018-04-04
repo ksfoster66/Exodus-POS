@@ -1,0 +1,22 @@
+This is a list of feature to be added, and anything that would have to be updated to support those features
+
+Inventory System: V1 complete
+
+Sales system
+
+Order System
+
+Customer Management
+
+Employee Management
+
+Report tracking
+
+GUI front end
+
+Methods to be updated:
+	Inventory::removeItem - Once reports are implemented add expense tracking to this method
+	
+	Inventory::inv_management to be implemented once the report system is implemented
+	
+	Inventory::createOrder - Implement once orders are implemented

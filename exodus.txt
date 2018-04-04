@@ -53,13 +53,25 @@ COMPONENT SYSTEMS AND NECESSARY DETAILS:
 		Delivery dates can be changed, according to availability
 		Orders have a comments section for any additional information to be added
 		
-			C1: Customer Orders
-				Orders to fulfill sales to customers for items not normally carried in store
-				These orders are assigned to a customer and an employee.
+			C1: Delayed order
+				Sales to be picked up or delivered at a later date
+				Must be tied to a customer and an employee
+				Has a date ordered
+				Has a date due
+				Has a date expected to arrive if not in stock
+				Can be a pick up or a delivery, denoted by an enumerated type
+				Can be tied to a special order
+				Can be tied to an inventory order
 			
-			C2: Inventory Orders
+			C2: Customer Orders
+				Orders to fulfill sales to customers for items not normally carried in store
+				Must be tied to a delayed order
+				Has an expected date of arrival
+			
+			C3: Inventory Orders
 				Orders to fulfill inventory requirements and needs
 				Orders are not assigned but are processed by whomever recieves the order in the store.
+				Can be tied to a delayed order if needed for a customer
 	
 	D: Reports
 		Generate reports based on information from the other systems.

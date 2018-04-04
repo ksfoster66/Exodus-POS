@@ -5,7 +5,7 @@
 
 #include <string>
 
-class item{
+class Item{
 private:
 	//fields
 	std::string name;
@@ -35,9 +35,11 @@ private:
 public:
 	//methods
 	//Consructors
-	item(int itemID, int UPC_code, std::string model);
+	Item(){};
 	
-	item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
+	Item(int itemID, int UPC_code, std::string model);
+	
+	Item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
 	
 	//Getters and setters
 	std::string getName();
@@ -105,17 +107,17 @@ public:
 	
 	void dec();
 	
-	item operator++();
+	Item operator++();
 	
-	item operator++(int);
+	Item operator++(int);
 	
-	item operator--();
+	Item operator--();
 	
-	item operator--(int);
+	Item operator--(int);
 	
-	item operator+=(int n);
+	Item operator+=(int n);
 	
-	item operator -=(int n);
+	Item operator -=(int n);
 	
 	void sold(int n=1);
 	
@@ -123,7 +125,11 @@ public:
 	
 	void soldPendingDelivered(int n = 1);
 	
+	void returned(int n = 1);
+	
 	void damageOut (int n =1);
+	
+	void removeFromDamaged (int n = 1);
 	
 	void soldDamaged (int n =1);
 };

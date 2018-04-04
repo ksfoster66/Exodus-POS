@@ -26,7 +26,7 @@
 	*/
 	
 	//Constructor
-	item::item(int itemID, int UPC_code, std::string model){
+	Item::Item(int itemID, int UPC_code, std::string model){
 		//Passed arguments
 		item_id = itemID;
 		upc = UPC_code;
@@ -45,7 +45,7 @@
 		current_price = 1000;
 	}
 	
-	item::item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost){
+	Item::Item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost){
 		item_id = itemID;
 		upc = UPC_code;
 		model_number = model;
@@ -79,47 +79,47 @@
 	}
 	
 	//Modifiers
-	std::string item::getName(){
+	std::string Item::getName(){
 		return name;
 	}
 	
-	void item::updateName(std::string t){
+	void Item::updateName(std::string t){
 		name = t;
 	}
 	
-	std::string item::getDescription(){
+	std::string Item::getDescription(){
 		return description;
 	}
 	
-	void item::updateDescription(std::string t){
+	void Item::updateDescription(std::string t){
 		description = t;
 	}
 	
-	std::string item::getType(){
+	std::string Item::getType(){
 		return type;
 	}
 	
-	void item::changeType(std::string t){
+	void Item::changeType(std::string t){
 		type = t;
 	}
 	
-	std::string item::getDepartment(){
+	std::string Item::getDepartment(){
 		return department;
 	}
 	
-	void item::setDepartment(std::string t){
+	void Item::setDepartment(std::string t){
 		department = t;
 	}
 	
-	std::string item::getModelNumber(){
+	std::string Item::getModelNumber(){
 		return model_number;
 	}
 	
-	void item::updateModelNumber(std::string t){
+	void Item::updateModelNumber(std::string t){
 		model_number = t;
 	}
 	
-	std::string item::getStock(){
+	std::string Item::getStock(){
 		
 		if( stock == a) return "available";
 		else if (stock == c) return "clearance";
@@ -129,7 +129,7 @@
 		return "error";
 	}
 	
-	void item::changeStockStatus(std::string t){
+	void Item::changeStockStatus(std::string t){
 		if(t.compare("available") == 0) stock = a;
 		else if(t.compare("clearance") == 0) stock = c;
 		else if(t.compare("discontinued") == 0) stock = d;
@@ -137,145 +137,157 @@
 		else if(t.compare("recall") == 0) stock = r;
 	}
 	
-	std::string item::getSupplier(){
+	std::string Item::getSupplier(){
 		return supplier;
 	}
 	
-	void item::changeSupplier(std::string t){
+	void Item::changeSupplier(std::string t){
 		supplier = t;
 	}
 	
-	double item::getPrice(){
-		return current_price;
+	double Item::getPrice(){
+		if (current_price != 0) return current_price;
+		else return MSRP;
 	}
 	
-	void item::setPrice(double n){
+	void Item::setPrice(double n){
 		current_price = n;
 	}
 	
-	double item::getMSRP(){
+	double Item::getMSRP(){
 		return MSRP;
 	}
 	
-	void item::setMSRP(double n){
+	void Item::setMSRP(double n){
 		MSRP = n;
 	}
 	
-	double item::getCost(){
+	double Item::getCost(){
 		return cost;
 	}
 	
-	void item::setCost(double n){
+	void Item::setCost(double n){
 		cost = n;
 	}
 	
-	int item::getID(){
+	int Item::getID(){
 		return item_id;
 	}
 	
-	int item::getUPC(){
+	int Item::getUPC(){
 		return upc;
 	}
 	
-	int item::getTotalCount(){
+	int Item::getTotalCount(){
 		return total_count;
 	}
 	
-	int item::getAvailableCount(){
+	int Item::getAvailableCount(){
 		if (available < 0) return 0;
 		return available;
 	}
 	
-	int item::getDamagedCount(){
+	int Item::getDamagedCount(){
 		return damaged;
 	}
 	
-	int item::getSold(){
+	int Item::getSold(){
 		return total_sold;
 	}
 	
-	int item::getDue(){
+	int Item::getDue(){
 		return sold_pending;
 	}
 	
-	int item::getOrdered(){
+	int Item::getOrdered(){
 		return ordered;
 	}
 	
 	//special inventory modifier methods
-	void item::add(int n){
+	void Item::add(int n){
 		total_count += n;
 		available += n;
 	}
 	
-	void item::subtract (int n){
+	void Item::subtract (int n){
 		total_count -= n;
 		available -= n;
 	}
 	
-	void item::inc(){
+	void Item::inc(){
 		total_count++;
 		available++;
 	}
 	
-	void item::dec(){
+	void Item::dec(){
 		total_count--;
 		available--;
 	}
 	
-	item item::operator++(){
+	Item Item::operator++(){
 		total_count++;
 		available++;
 	}
 	
-	item item::operator++(int){
+	Item Item::operator++(int){
 		total_count++;
 		available++;
 	}
 	
-	item item::operator--(){
+	Item Item::operator--(){
 		total_count--;
 		available--;
 	}
 	
-	item item::operator--(int){
+	Item Item::operator--(int){
 		total_count--;
 		available--;
 	}
 	
-	item item::operator+=(int n){
+	Item Item::operator+=(int n){
 		total_count+=n;
 		available+=n;
 	}
 	
-	item item::operator -=(int n){
+	Item Item::operator -=(int n){
 		total_count-=n;
 		available-=n;
 	}
 	
-	void item::sold(int n){
+	void Item::sold(int n){
 		total_count -= n;
 		available -= n;
 		total_sold += n;
 	}
 	
-	void item::soldPending(int n){
+	void Item::soldPending(int n){
 		available -= n;
 		sold_pending+= n;
 		total_sold += n;
 	}
 	
-	void item::soldPendingDelivered(int n){
+	void Item::soldPendingDelivered(int n){
 		sold_pending -= n;
 		total_count -= n;
 	}
 	
-	void item::damageOut (int n){
+	void Item::returned(int n){
+		total_count+= n;
+		available += n;
+		total_sold -= n;
+	}
+	
+	void Item::damageOut (int n){
 		available -= n;
 		damaged += n;
 	}
 	
-	void item::soldDamaged (int n){
+	void Item::removeFromDamaged (int n){
+		available += n;
+		damaged -= n;
+	}
+	
+	void Item::soldDamaged (int n){
 		total_count -= n;
 		damaged -= n;
 		total_sold += n;
