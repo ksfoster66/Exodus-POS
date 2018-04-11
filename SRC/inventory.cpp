@@ -56,11 +56,11 @@
 		
 	}
 	
-	bool Inventory::addItem(Item i)//Adds an item to inventory
+	bool Inventory::addItem(Item *i)//Adds an item to inventory
 	{//Items default to a stock amount of zero and prices of 10000 until set
-		int id = i.getID();
-		int upc = i.getUPC();
-		std::string m = i.getModelNumber();
+		int id = i->getID();
+		int upc = i->getUPC();
+		std::string m = i->getModelNumber();
 		
 		if ( contains(id) || contains(upc) || contains(m)){
 			return false;
@@ -72,34 +72,35 @@
 		
 		num_items++;
 		
-		if (i.getTotalCount() != 0){
-			this->total_count += i.getTotalCount();
-			this->total_value += (i.getMSRP()*i.getTotalCount());
+		if (i->getTotalCount() != 0){
+			this->total_count += i->getTotalCount();
+			this->total_value += (i->getMSRP()*i->getTotalCount());
 		}
 		
 		return true;
 		
 	}
 	
-	void Inventory::removeItem(Item i)//Removes an item from inventory.
+	void Inventory::removeItem(int ID)//Removes an item from inventory.
 	{//If item still has on hand count items will be billed out as expense. Expense tracking to be added when reports are added 
-		if (i.getTotalCount() != 0){
-			this->total_count -= i.getTotalCount();
-			this->total_value -= (i.getMSRP()*i.getTotalCount());
+		Item *i = inv[ID];
+		if (i->getTotalCount() != 0){
+			this->total_count -= i->getTotalCount();
+			this->total_value -= (i->getMSRP()*i->getTotalCount());
 		}
 		
-		UPC_listing.erase(i.getUPC());
-		model_listing.erase(i.getModelNumber());
-		inv.erase(i.getID());
+		UPC_listing.erase(i->getUPC());
+		model_listing.erase(i->getModelNumber());
+		inv.erase(ID);
 	}
 	void Inventory::addToCount(int itemID, int quantity){
 	//Add to the available count of an item //Add error handling
-		inv[itemID].add(quantity);	
+		inv[itemID]->add(quantity);	
 	}
 	
 	void Inventory::subtractFromCount(int itemID, int quantity){
 	//Subtract from the available count of an item
-		inv[itemID].subtract(quantity);
+		inv[itemID]->subtract(quantity);
 	}
 	
 	void Inventory::sold(std::vector<int> itemIDs, std::vector<int> quantities, std::vector<double> sale_price){
@@ -107,9 +108,9 @@
 		int num_sold = 0;
 		double value_sold = 0, value_of_sale = 0;
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].sold(quantities[i]);
+			inv[itemIDs[i]]->sold(quantities[i]);
 			num_sold += quantities[i];
-			value_sold -= inv[itemIDs[i]].getMSRP()*quantities[i];
+			value_sold -= inv[itemIDs[i]]->getMSRP()*quantities[i];
 			value_of_sale -= sale_price[i]*quantities[i];
 			
 		}
@@ -122,9 +123,9 @@
 		int num_sold = 0;
 		double value_sold = 0, value_of_sale = 0;
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].soldPending(quantities[i]);
+			inv[itemIDs[i]]->soldPending(quantities[i]);
 			num_sold += quantities[i];
-			value_sold -= inv[itemIDs[i]].getMSRP()*quantities[i];
+			value_sold -= inv[itemIDs[i]]->getMSRP()*quantities[i];
 			value_of_sale -= sale_price[i]*quantities[i];
 			
 		}
@@ -138,9 +139,9 @@
 		double returned_value = 0, value_of_sale;
 		
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].returned(quantities[i]);
+			inv[itemIDs[i]]->returned(quantities[i]);
 			num_return += quantities[i];
-			returned_value -= inv[itemIDs[i]].getMSRP()*quantities[i];
+			returned_value -= inv[itemIDs[i]]->getMSRP()*quantities[i];
 			value_of_sale -= sale_price[i]*quantities[i];
 			
 		}
@@ -150,7 +151,7 @@
 	void Inventory::delay_fulfill(std::vector<int> itemIDs, std::vector<int> quantities){
 	//When a delayed order is fulfilled they shall be removed from the due file counting
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].soldPendingDelivered(quantities[i]);
+			inv[itemIDs[i]]->soldPendingDelivered(quantities[i]);
 			
 		}
 	}
@@ -158,7 +159,7 @@
 	void Inventory::damage_out(std::vector<int> itemIDs, std::vector<int> quantities){
 	//Marks the item and amounts as damaged
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].damageOut(quantities[i]);
+			inv[itemIDs[i]]->damageOut(quantities[i]);
 			
 		}
 	}
@@ -166,7 +167,7 @@
 	void Inventory::remove_damaged(std::vector<int> itemIDs, std::vector<int> quantities){
 	//Removes the desired item and quantities from damaged
 		for (int i = 0; i < itemIDs.size(); i++){
-			inv[itemIDs[i]].removeFromDamaged(quantities[i]);
+			inv[itemIDs[i]]->removeFromDamaged(quantities[i]);
 			
 		}
 	}
@@ -201,7 +202,7 @@
 	}
 	
 	//getters and setters
-	Item Inventory::getItem(int n)//Returns item based on either the item number or the UPC code
+	Item* Inventory::getItem(int n)//Returns item based on either the item number or the UPC code
 	{
 		int temp = n;
 		int count = 0;
@@ -219,15 +220,15 @@
 			}
 		}
 		else{
-			std::map<int, Item>::iterator it = inv.find(n);
+			std::map<int, Item*>::iterator it = inv.find(n);
 			
 			if (it != inv.end()) return inv[n];
 		}
-		
-		return Item();
+		Item *blank;
+		return blank;
 	}
 	
-	Item Inventory::getItem(std::string m)//Returns the item based on model number
+	Item* Inventory::getItem(std::string m)//Returns the item based on model number
 	{
 		std::unordered_map<std::string, int>::iterator it = model_listing.find(m);
 			
@@ -235,7 +236,8 @@
 			int id = model_listing[m];
 			return inv[id];
 		}
-		return Item();
+		Item *blank;
+		return blank;
 		
 	}
 	

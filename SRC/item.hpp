@@ -34,12 +34,16 @@ private:
 	
 public:
 	//methods
+	//ID generator
+	static int used_id;
+	
+	int getNewID();
 	//Consructors
-	Item(){};
+	Item(){}//Only used to return a blank item. A blank item shows no item found
 	
-	Item(int itemID, int UPC_code, std::string model);
+	Item(int UPC_code, std::string model);
 	
-	Item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
+	Item(int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
 	
 	//Getters and setters
 	std::string getName();

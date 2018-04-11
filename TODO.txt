@@ -1,12 +1,12 @@
 This is a list of feature to be added, and anything that would have to be updated to support those features
 
-Inventory System: V1 complete
+Inventory System: V.1 complete
 
 Sales system
 
 Order System
 
-Customer Management
+Customer Management 
 
 Employee Management
 
@@ -14,9 +14,19 @@ Report tracking
 
 GUI front end
 
-Methods to be updated:
+Things to be updated:
 	Inventory::removeItem - Once reports are implemented add expense tracking to this method
 	
 	Inventory::inv_management to be implemented once the report system is implemented
 	
 	Inventory::createOrder - Implement once orders are implemented
+	
+	Inventory - Add error handling
+	
+	Employee - Add a record of orders once order management is implemented
+	
+	Employee - Add manager status. Not important yet
+	
+	Employee - Add a record of past employees. Probably shift this to records
+	
+	Customer - Add a record of orders once order management is implemented

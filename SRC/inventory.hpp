@@ -15,7 +15,7 @@ class Inventory{
 private:
 	//Fields
 	//Inventory maps
-	std::map<int, Item> inv;//Main map. Key:ItemID. Value:Item
+	std::map<int, Item*> inv;//Main map. Key:ItemID. Value:Item
 	std::unordered_map<int, int> UPC_listing;//Maps the items UPC to the item.
 	std::unordered_map<std::string, int> model_listing;//Maps the model number to the item
 	
@@ -55,10 +55,10 @@ public:
 	
 	void updateSales(int n, double a, double v);//N = number sold, a = actual value of sold items, v - value items were sold at
 	
-	bool addItem(Item i);//Adds an item to inventory
+	bool addItem(Item *i);//Adds an item to inventory
 	//Items default to a stock amount of zero and prices of 10000 until set
 	
-	void removeItem(Item i);//Removes an item from inventory.
+	void removeItem(int ID);//Removes an item from inventory.
 	//If item still has on hand count items will be billed out as expense
 	//Anywhere this method is called should check to be sure there are no orders for this item
 	
@@ -95,10 +95,10 @@ public:
 	
 	
 	//getters and setters
-	Item getItem(int n);
+	Item* getItem(int n);
 	//Returns item based on either the item number or the UPC code
 	
-	Item getItem(std::string m);
+	Item* getItem(std::string m);
 	//Returns the item based on model number
 	
 	int get_num_items();//Number of different items in inventory	//IMPL

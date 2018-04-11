@@ -82,9 +82,7 @@ COMPONENT SYSTEMS AND NECESSARY DETAILS:
 	E: Customer Management
 		Add customers
 		Edit customers information
-		Remove customers.
-		Customers can only be removed if they have no pending orders
-		Customers can only be removed if they had no purchases in the last 3 months.
+		Customers should never be removed
 	
 	F: Employee Management
 		Add employees
@@ -104,6 +102,7 @@ COMPONENT SYSTEMS AND NECESSARY DETAILS:
 			F2: Managers
 				Management employees
 				Have power to add employees, can approve changes in the system that need higher approval.
+				
 	
 Required data structures:
 	Client: Terminals that are run by the users

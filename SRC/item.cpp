@@ -24,11 +24,12 @@
 	int sold_pending;
 	int ordered;
 	*/
+	int Item::used_id = 0;
 	
 	//Constructor
-	Item::Item(int itemID, int UPC_code, std::string model){
+	Item::Item(int UPC_code, std::string model){
 		//Passed arguments
-		item_id = itemID;
+		item_id = getNewID();
 		upc = UPC_code;
 		model_number = model;
 		//Defaults
@@ -45,8 +46,8 @@
 		current_price = 1000;
 	}
 	
-	Item::Item(int itemID, int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost){
-		item_id = itemID;
+	Item::Item(int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost){
+		item_id = getNewID();
 		upc = UPC_code;
 		model_number = model;
 		
@@ -291,6 +292,11 @@
 		total_count -= n;
 		damaged -= n;
 		total_sold += n;
+	}
+	
+	int Item::getNewID(){
+		used_id++;
+		return used_id;
 	}
 	
 		
