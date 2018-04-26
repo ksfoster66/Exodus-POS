@@ -2,17 +2,19 @@ This is a list of feature to be added, and anything that would have to be update
 
 Inventory System: V.1 complete
 
-Sales system
+Sales system: V.1
 
-Order System
+Order System: V.1
 
-Customer Management 
+Customer Management: V.1 
 
-Employee Management
+Employee Management: V.1
 
-Report tracking
+Report tracking: low priority
 
-GUI front end
+GUI front end - A whole seperate system that sits on top of the back end. Prototype with a terminal based interface
+
+Terminal interface option - Test system to verify everything works before creating the GUI
 
 Things to be updated:
 	Inventory::removeItem - Once reports are implemented add expense tracking to this method
@@ -30,3 +32,11 @@ Things to be updated:
 	Employee - Add a record of past employees. Probably shift this to records
 	
 	Customer - Add a record of orders once order management is implemented
+	
+	Sales - add a manager approval system
+	
+	Sales - Finish adding the order system
+	
+	Order- create the creation mechanism that automatically generates orders based on the input from the sales system.
+	
+	
