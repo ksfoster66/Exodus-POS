@@ -3,8 +3,10 @@ This is a list of feature to be added, and anything that would have to be update
 Inventory System: V.1 complete
 
 Sales system: V.1
+	Needs to have added ability for order creation and record holding. Return ability to be designed and added
 
 Order System: V.1
+	Automated order system: V.1
 
 Customer Management: V.1 
 
@@ -37,6 +39,10 @@ Things to be updated:
 	
 	Sales - Finish adding the order system
 	
-	Order- create the creation mechanism that automatically generates orders based on the input from the sales system.
+	Sales - When reporting and returns are added, add sales number tracking
+	
+	Order- Add the special and inventory order subclasses and update the manager and generator accordingly
+	
+	A system to handle dates properly
 	
 	
