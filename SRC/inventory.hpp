@@ -16,7 +16,7 @@ private:
 	//Fields
 	//Inventory maps
 	std::map<int, Item*> inv;//Main map. Key:ItemID. Value:Item
-	std::unordered_map<int, int> UPC_listing;//Maps the items UPC to the item.
+	std::unordered_map<std::string, int> UPC_listing;//Maps the items UPC to the item.
 	std::unordered_map<std::string, int> model_listing;//Maps the model number to the item
 	
 	//current info
@@ -80,18 +80,24 @@ public:
 	void delay_fulfill(std::vector<int> itemIDs, std::vector<int> quantities);
 	//When a delayed order is fulfilled they shall be removed from the due file counting
 	
-	void damage_out(std::vector<int> itemID, std::vector<int> quantity);
+	void damage_out(int ID, int quantity);
+	
+	void damage_out(std::vector<int> itemIDs, std::vector<int> quantities);
 	//Marks the item and amounts as damaged
 	
-	void remove_damaged(std::vector<int> itemID, std::vector<int> quantity);
+	void remove_damaged(int itemID, int quantity);
+	
+	void remove_damaged(std::vector<int> itemIDs, std::vector<int> quantities);
 	//Removes the desired item and quantities from damaged
 	
 	void create_order(std::vector<int> itemIDs, std::vector<int> quantities);
 	//Creates an inventory order
 	
-	bool contains(int n);//Checks if a certain item exists in the system. If the item isn't an UPC code is treated as a item ID
+	bool contains(int n);//Checks if a certain item exists in the system.
 	
 	bool contains(std::string m);//Checks if a certain item is in the system based on the model number
+	
+	bool contains(UPC u);//Checks if a certain item exists in the system.
 	
 	
 	//getters and setters
@@ -100,6 +106,9 @@ public:
 	
 	Item* getItem(std::string m);
 	//Returns the item based on model number
+	
+	Item* getItem(UPC u);
+	
 	
 	int get_num_items();//Number of different items in inventory	//IMPL
 	int get_total_count();//Current count of number of individuals items in inventory	//IMPL

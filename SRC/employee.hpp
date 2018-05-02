@@ -2,20 +2,21 @@
 #define EMPLOYEE_HPP
 
 #include <string>
+#include <vector>
 
 class Employee{
 	//fields
 	std::string first_name, last_name;
 	int emp_ID;
-	int phone_number;
+	std::string phone_number;
 	
-	
+	std::vector<int> order_numbers;
 	
 public:
 	//methods
 	//constructors and destructors
 	
-	Employee(int ID, std::string fname, std::string lname);
+	Employee(std::string fname, std::string lname);
 	
 	~Employee(){};
 	//Getters and setters
@@ -27,15 +28,21 @@ public:
 	
 	int getID();
 	
-	int getPhoneNumber();
+	std::string getPhoneNumber();
 	
-	void setPhoneNumber(int n);
+	void setPhoneNumber(std::string n);
 	
 	//Info for getting ID number;
 	static int used_id;
 	int getNewID();
 	
 	//modifiers
+	
+	void addOrder(int id);
+	
+	void removeOrder(int id);
+	
+	std::vector<int> getOrders();
 };
 
 #endif

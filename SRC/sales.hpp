@@ -6,6 +6,7 @@
 #include "order_manager.hpp"
 #include "cust_manager.hpp"
 #include "employee.hpp"
+#include "order_generator.hpp"
 
 #include <vector>
 #include <string>
@@ -16,14 +17,20 @@ class Sales{
 	Inventory* inv;
 	OrderManager* orderMgr;
 	CustManager* custMgr;
+	EmpManager* empMgr;
+	
+	OrderGenerator* orderGen;
 	
 	Customer* cust;
 	Employee* emp;
 	
+	bool isCustSet;
+	bool isEmpSet;
+	
 	std::vector<int> ids;
 	std::vector<int> quantities;
 	std::vector<double> prices;
-	std::vector<double> item_total_price;
+	std::vector<double> item_total_prices;
 	
 	std::vector<Item*> ref;
 	
@@ -42,7 +49,7 @@ class Sales{
 	
 public:
 	//Constructor
-	Sales(Inventory* i, OrderManager* m, CustManager* c, Employee* e, double localTaxRate=.07);
+	Sales(Inventory* i, OrderManager* m, CustManager* c, EmpManager* e, OrderGenerator* o, double localTaxRate=.07);
 	
 	//getters and setters
 	std::vector<int> getItemIDs();
@@ -65,7 +72,8 @@ public:
 	
 	//Item entry and modification
 	void enterItem(int i, int quant = 1, double p = -1.00);
-	void enterItem(string m, int quant = 1, double p = -1.00);
+	void enterItem(std::string m, int quant = 1, double p = -1.00);
+	void enterItem(UPC u, int quant = 1, double p = -1.00);
 	void changeQuantity(int line, int quantity);
 	void removeItem(int line);
 	void changePrice(int line, double price);
@@ -80,12 +88,13 @@ public:
 	double payWithCredit(double amount);
 	
 	//Order generation
+	bool isCust();
 	void custLookUp(int id);
+	void empLookUp(int id);
 	
-	//TBI once the Order Generator is implemented
+	void createOrder();
 	
 	//Output and display
-	void run();
 	void display();
 	
 };

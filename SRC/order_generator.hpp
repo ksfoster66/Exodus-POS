@@ -23,7 +23,7 @@ public:
 		inv = i;
 	}
 	
-	void createOrder(std::vector<int> ids, std::vector<int> quantities, std::vector<double> prices, customer* c, employee* e);
-}
+	void createOrder(std::vector<int> ids, std::vector<int> quantities, std::vector<double> prices, Customer* c, Employee* e);
+};
 
 #endif

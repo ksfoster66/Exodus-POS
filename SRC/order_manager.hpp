@@ -8,7 +8,7 @@
 #include <string>
 
 class OrderManager{
-	map<int, Order*> orders;
+	std::map<int, Order*> orders;
 	int number_active;
 	Inventory* inv;
 	
@@ -19,14 +19,14 @@ public:
 	}
 	
 	Order* getOrder(int order_number);
-	vector<Order*> getOrders(Customer *c);
-	vector<Order*> getOrders(Employee *e);
-	vector<Order*> getOrders(int id);//Uses the item number
+	std::vector<Order*> getOrders(Customer *c);
+	std::vector<Order*> getOrders(Employee *e);
+	std::vector<Order*> getOrders(int id);//Uses the item number
 	
 	void refundOrder(int order_number);
-	void refundOrder(int order_number, vector<int> q);
+	void refundOrder(int order_number, std::vector<int> q);
 	void fulfillOrder(int order_number);
-	void fulfillOrder(int order_number, vector<int> q);
+	void fulfillOrder(int order_number, std::vector<int> q);
 	
 	void addOrder(Order* o);
 	

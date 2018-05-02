@@ -1,0 +1,42 @@
+Inventory interfaces:
+	Inventory()
+
+	Item interface
+		Item(UPC* u, std::string model);
+	
+		Item(UPC* u, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
+			
+		UPC
+			UPC(std::string upc)
+	
+	
+Sales interfaces:
+	Sales(Inventory* i, OrderManager* m, CustManager* c, EmpManager* e, OrderGenerator* o, double localTaxRate=.07)
+
+Order Management interfaces:
+	OrderManager(Inventory* i)
+	
+	Order interface:
+		Order
+		Order(Customer* c, Employee* e, std::vector<int> items, std::vector<int> quant, std::vector<double> prices, bool s = false)
+	
+	Order Generator interface:
+		OrderGenerator(OrderManager* o, Inventory* i)
+	
+Employee management interfaces:
+	EmpManager()
+	
+	Employee interferface:
+		
+		Employee(std::string fname, std::string lname)
+	
+Customer management interfaces:
+	CustManager()
+	
+	Customer interface:
+		Customer(std::string fname, std::string lname, std::string phone_number)
+	
+Reports interface:
+
+
+

@@ -16,8 +16,8 @@
 	
 	std::vector<Order*> OrderManager::getOrders(Customer *c){
 		std::vector<Order*> output;
-		for (std::map<Order*>::iterator it = orders.begin(); it != orders.end(); it++){
-			if(orders[it]->getCutomer() == c) output.push_back(orders[it]);
+		for (std::map<int, Order*>::iterator it = orders.begin(); it != orders.end(); it++){
+			if(it->second->getCustomer() == c) output.push_back(it->second);
 		}
 		
 		return output;
@@ -25,20 +25,20 @@
 	
 	std::vector<Order*> OrderManager::getOrders(Employee *e){
 		std::vector<Order*> output;
-		for (std::map<Order*>::iterator it = orders.begin(); it != orders.end(); it++){
-			if(orders[it]->getEmployee() == e) output.push_back(orders[it]);
+		for (std::map<int, Order*>::iterator it = orders.begin(); it != orders.end(); it++){
+			if(it->second->getEmployee() == e) output.push_back(it->second);
 		}
 		
 		return output;
 	}
 	
-	std::vector<Order*> OrderManager::getOrders(int id){}//Uses the item number
+	std::vector<Order*> OrderManager::getOrders(int id){//Uses the item number
 		std::vector<Order*> output;
 		std::vector<int> ids;
-		for (std::map<Order*>::iterator it = orders.begin(); it != orders.end(); it++){
-			ids = orders[it]->getItemsDue();
+		for (std::map<int, Order*>::iterator it = orders.begin(); it != orders.end(); it++){
+			ids = it->second->getItemsDue();
 			for(int i = 0; i < ids.size(); i++){
-				if(ids[i] == id) output.push_back(orders[it]);
+				if(ids[i] == id) output.push_back(it->second);
 				break;
 			}
 		}
@@ -55,7 +55,7 @@
 		inv->returned(ids, quantities, prices);
 		
 	}
-	void OrderManager::refundOrder(int order_number, vector<int> q){
+	void OrderManager::refundOrder(int order_number, std::vector<int> q){
 		Order* order = orders[order_number];
 		std::vector<int> ids = order->getItemsDue();
 		std::vector<double> prices = order->getPriceSold();
@@ -68,13 +68,13 @@
 		std::vector<int> ids = order->getItemsDue();
 		std::vector<int> quantities = order->getQuantitiesDue();
 		
-		inv->delay_fulfilled(ids, quantities);
+		inv->delay_fulfill(ids, quantities);
 	}
-	void OrderManager::fulfillOrder(int order_number, vector<int> q){
+	void OrderManager::fulfillOrder(int order_number, std::vector<int> q){
 		Order* order = orders[order_number];
 		std::vector<int> ids = order->getItemsDue();
 		
-		inv->delay_fulfilled(ids, q);
+		inv->delay_fulfill(ids, q);
 	}
 	
 	void OrderManager::addOrder(Order* o){
@@ -87,7 +87,7 @@
 		bool result = true;
 		try{
 			orders.at(id);
-		}catch(){
+		}catch(std::out_of_range e){
 			result = false;
 		}
 		return result;

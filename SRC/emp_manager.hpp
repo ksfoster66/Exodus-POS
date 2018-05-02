@@ -35,6 +35,8 @@ public:
 	void addEmployee(Employee *e);
 	
 	void removeEmployee(int ID);
+	
+	bool contains(int id);
 
 };
 

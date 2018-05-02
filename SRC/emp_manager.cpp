@@ -33,3 +33,8 @@
 		employee_map.erase(ID);
 		num_employed--;
 	}
+	
+	bool EmpManager::contains(int id){
+		if(employee_map.find(id) == employee_map.end()) return false;
+		return true;
+	}

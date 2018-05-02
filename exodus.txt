@@ -121,7 +121,7 @@ Required data structures:
 	
 	items
 		required fields:
-			UPC Code:Int - The UPC code of the item
+			UPC Code:UPC(std::sting) - The UPC code of the item
 			ID Number:Int - In house id number for item
 			Model number:String - The model number of the item.
 			Item name:String - Item's name

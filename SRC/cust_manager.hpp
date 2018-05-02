@@ -25,13 +25,17 @@ public:
 	
 	Customer* getCustomer(int ID);//Gets customer using their customer ID.
 	
-	std::vector<Customer*> getCustomers(std::string name); //Gets a list of customers based on their name
+	std::vector<Customer*> getCustomersByName(std::string name); //Gets a list of customers based on their name
 	
-	std::vector<Customer*> getCustomers(int phone_number); //Gets a list of customers based on the phone number entered
+	std::vector<Customer*> getCustomersByPhone(std::string phone_number); //Gets a list of customers based on the phone number entered
 	
 	int getNumCustomers();
 	
 	void addCustomer(Customer *c);
+	
+	void removeCustomer(int id);
+	
+	bool contains(int id);
 	
 };
 

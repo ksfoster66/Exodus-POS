@@ -2,22 +2,23 @@
 	
 	/*
 	std::string first_name, last_name;
-	int phone_number;
+	std::string phone_number;
 	std::string address;
 	std::string email;
 	
 	int cust_ID;
 	
+	std::vector<int> order_numbers;
 	
 	*/
 	
 	int Customer::used_id = 0;
 	
-	Customer::Customer(std::string fname, std::string lname, int number, int ID){
+	Customer::Customer(std::string fname, std::string lname, std::string number){
 		first_name = fname;
 		last_name = lname;
 		phone_number = number;
-		cust_ID = ID;
+		cust_ID = getNewID();
 	}
 	
 	//Customer::~Customer(){} //Already implemented for now
@@ -40,11 +41,11 @@
 		return cust_ID;
 	}
 	
-	int Customer::getPhoneNumber(){
+	std::string Customer::getPhoneNumber(){
 		return phone_number;
 	}
 	
-	void Customer::setPhoneNumber(int num){
+	void Customer::setPhoneNumber(std::string num){
 		phone_number = num;
 	}
 	
@@ -68,3 +69,22 @@
 		used_id++;
 		return used_id;
 	}
+	
+	void Customer::addOrder(int id){
+		order_numbers.push_back(id);
+	}
+	
+	void Customer::removeOrder(int id){
+		for (int i = 0; i< order_numbers.size(); i++){
+			if (order_numbers[i] == id){
+				order_numbers.erase(order_numbers.begin() + i);
+				break;
+			}
+		}
+	}
+	
+	std::vector<int> Customer::getOrders(){
+		return order_numbers;
+	}
+	
+	

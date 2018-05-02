@@ -15,7 +15,7 @@
 	double cost;
 	
 	int item_id;
-	int upc;
+	UPC* upc;
 	
 	int total_count;
 	int available;
@@ -27,10 +27,10 @@
 	int Item::used_id = 0;
 	
 	//Constructor
-	Item::Item(int UPC_code, std::string model){
+	Item::Item(UPC* UPC_code, std::string model): upc(UPC_code){
 		//Passed arguments
 		item_id = getNewID();
-		upc = UPC_code;
+		//upc(UPC_code);
 		model_number = model;
 		//Defaults
 		total_count = 0;
@@ -46,9 +46,9 @@
 		current_price = 1000;
 	}
 	
-	Item::Item(int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost){
+	Item::Item(UPC* UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost) : upc(UPC_code){
 		item_id = getNewID();
-		upc = UPC_code;
+		//upc(UPC_code);
 		model_number = model;
 		
 		this->name = name;
@@ -175,8 +175,8 @@
 		return item_id;
 	}
 	
-	int Item::getUPC(){
-		return upc;
+	std::string Item::getUPC(){
+		return upc->getUPC();
 	}
 	
 	int Item::getTotalCount(){

@@ -3,6 +3,7 @@
 #ifndef item_hpp
 #define item_hpp
 
+#include "upc.hpp"
 #include <string>
 
 class Item{
@@ -23,7 +24,7 @@ private:
 	double cost;
 	
 	int item_id;
-	int upc;
+	UPC* upc;
 	
 	int total_count;
 	int available;
@@ -39,11 +40,10 @@ public:
 	
 	int getNewID();
 	//Consructors
-	Item(){}//Only used to return a blank item. A blank item shows no item found
 	
-	Item(int UPC_code, std::string model);
+	Item(UPC* UPC_code, std::string model);
 	
-	Item(int UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
+	Item(UPC* UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
 	
 	//Getters and setters
 	std::string getName();
@@ -88,7 +88,7 @@ public:
 	
 	int getID();
 	
-	int getUPC();
+	std::string getUPC();
 	
 	int getTotalCount();
 	

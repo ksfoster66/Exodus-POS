@@ -9,7 +9,7 @@
 #include "customer.hpp"
 #include <vector>
 
-class order{
+class Order{
 	
 	int order_number;
 	//Date ordered;
@@ -19,16 +19,18 @@ class order{
 	Customer *customer;//THe customer that purchased the order
 	Employee *employee;//The employee that sold the order
 	
-	vector<int> itemIDs;
-	vector<int> quantities;
-	vector<double> price_sold;
+	std::vector<int> itemIDs;
+	std::vector<int> quantities;
+	std::vector<double> price_sold;
 	 
 	//ID generating code;
 	static int used_id;
 	int getNewID();
 	
+	bool special;
+	
 public:
-	Order(Customer* c, Employee* e, vector<int> items, vector<int> quant, vector<double> prices);
+	Order(Customer* c, Employee* e, std::vector<int> items, std::vector<int> quant, std::vector<double> prices, bool s = false);
 	
 	int getOrderNumber();
 	
@@ -41,13 +43,15 @@ public:
 	Customer* getCustomer();
 	Employee* getEmployee();
 	
-	vector<int> getItemsDue();
-	vector<int> getQuantitiesDue();
-	vector<double> getPriceSold();
+	std::vector<int> getItemsDue();
+	std::vector<int> getQuantitiesDue();
+	std::vector<double> getPriceSold();
 	
-	void itemsPickedUp(vector<int> q);
+	void itemsPickedUp(std::vector<int> q);
 	
-	void refundOrder(vector<int> q);
+	void refundOrder(std::vector<int> q);
+	
+	
 };
 
 #endif

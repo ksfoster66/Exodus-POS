@@ -1,10 +1,12 @@
 
 #include "item.hpp"
 #include "inventory.hpp"
+
+#include <iostream>
 	
 	/*
 	std::map<int, item> inv;//Main map. Key:ItemID. Value:Item
-	std::unordered_map<int, int> UPC_listing;//Maps the items UPC to the item.
+	std::unordered_map<std::string, int> UPC_listing;//Maps the items UPC to the item.
 	std::unordered_map<std::string, int> model_listing;//Maps the model number to the item
 	
 	//current info
@@ -59,15 +61,16 @@
 	bool Inventory::addItem(Item *i)//Adds an item to inventory
 	{//Items default to a stock amount of zero and prices of 10000 until set
 		int id = i->getID();
-		int upc = i->getUPC();
+		UPC upc = i->getUPC();
 		std::string m = i->getModelNumber();
 		
 		if ( contains(id) || contains(upc) || contains(m)){
+			std::cout << "Error: Item already exists" << std::endl;
 			return false;
 		}
 		
 		inv[id] = i;
-		UPC_listing[upc] = id;
+		UPC_listing[upc.getUPC()] = id;
 		model_listing[m] = id;
 		
 		num_items++;
@@ -77,6 +80,7 @@
 			this->total_value += (i->getMSRP()*i->getTotalCount());
 		}
 		
+		std::cout << "item successfully added" << std::endl;
 		return true;
 		
 	}
@@ -89,7 +93,7 @@
 			this->total_value -= (i->getMSRP()*i->getTotalCount());
 		}
 		
-		UPC_listing.erase(i->getUPC());
+		UPC_listing.erase(i->getUPC());//gets the string from the UPC object
 		model_listing.erase(i->getModelNumber());
 		inv.erase(ID);
 	}
@@ -156,12 +160,26 @@
 		}
 	}
 	
+	void Inventory::damage_out(int ID, int quantity){
+	//Marks the item and amounts as damaged
+		
+		inv[ID]->damageOut(quantity);
+			
+	}
+	
 	void Inventory::damage_out(std::vector<int> itemIDs, std::vector<int> quantities){
 	//Marks the item and amounts as damaged
 		for (int i = 0; i < itemIDs.size(); i++){
 			inv[itemIDs[i]]->damageOut(quantities[i]);
 			
 		}
+	}
+	
+	void Inventory::remove_damaged(int ID, int quantity){
+	//Removes the desired item and quantities from damaged
+		
+		inv[ID]->removeFromDamaged(quantity);
+		
 	}
 	
 	void Inventory::remove_damaged(std::vector<int> itemIDs, std::vector<int> quantities){
@@ -177,22 +195,9 @@
 	
 	bool Inventory::contains(int n)//Checks if a certain item exists in the system. If the item isn't an UPC code is treated as a item ID
 	{
-		int temp = n;
-		int count = 0;
-		while (temp != 0){
-			temp /= 10;
-			count++;
-		}
 		
-		if (count == 12){
-			
-			if (UPC_listing.find(n) == UPC_listing.end()) return false;
-		}
-		else{
-			if (inv.find(n) == inv.end()) return false;
-		}
-		
-		return false;
+		if (inv.find(n) == inv.end()) return false;
+		return true;
 	}
 	
 	bool Inventory::contains(std::string m)//Checks if a certain item is in the system based on the model number
@@ -201,29 +206,19 @@
 		return true;
 	}
 	
+	bool Inventory::contains(UPC u)//Checks if a certain item is in the system based on the model number
+	{
+		if (UPC_listing.find(u.getUPC()) == UPC_listing.end()) return false;
+		return true;
+	}
+	
 	//getters and setters
 	Item* Inventory::getItem(int n)//Returns item based on either the item number or the UPC code
 	{
-		int temp = n;
-		int count = 0;
-		while (temp != 0){
-			temp /= 10;
-			count++;
-		}
 		
-		if (count == 12){
-			std::unordered_map<int, int>::iterator it = UPC_listing.find(n);
+		std::map<int, Item*>::iterator it = inv.find(n);
 			
-			if (it != UPC_listing.end()) {
-				int id = UPC_listing[n];
-				return inv[id];	
-			}
-		}
-		else{
-			std::map<int, Item*>::iterator it = inv.find(n);
-			
-			if (it != inv.end()) return inv[n];
-		}
+		if (it != inv.end()) return inv[n];
 		Item *blank;
 		return blank;
 	}
@@ -234,6 +229,19 @@
 			
 		if (it != model_listing.end()){
 			int id = model_listing[m];
+			return inv[id];
+		}
+		Item *blank;
+		return blank;
+		
+	}
+	
+	Item* Inventory::getItem(UPC u)//Returns the item based on model number
+	{
+		std::unordered_map<std::string, int>::iterator it = UPC_listing.find(u.getUPC());
+			
+		if (it != model_listing.end()){
+			int id = UPC_listing[u.getUPC()];
 			return inv[id];
 		}
 		Item *blank;

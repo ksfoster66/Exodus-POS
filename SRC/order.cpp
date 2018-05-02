@@ -12,6 +12,8 @@
 	vector<int> itemIDs;
 	vector<int> quantities;
 	vector<double> price_sold;
+	
+	bool special;
 	 */
 	 
 	//ID generating code;
@@ -21,7 +23,7 @@
 		return used_id;
 	}
 	
-	Order::Order(Customer* c, Employee* e, vector<int> items, vector<int> quant, vector<double> prices){
+	Order::Order(Customer* c, Employee* e, std::vector<int> items, std::vector<int> quant, std::vector<double> prices, bool s){
 		order_number = getNewID();
 		
 		customer = c;
@@ -30,6 +32,8 @@
 		itemIDs = items;
 		quantities = quant;
 		price_sold = prices;
+		
+		special = s;
 	}
 	
 	int Order::getOrderNumber(){
@@ -50,39 +54,39 @@
 		return employee;
 	}
 	
-	vector<int> Order::getItemsDue(){
+	std::vector<int> Order::getItemsDue(){
 		return itemIDs;
 	}
-	vector<int> Order::getQuantitiesDue(){
+	std::vector<int> Order::getQuantitiesDue(){
 		return quantities;
 	}
-	vector<double> Order::getPriceSold(){
+	std::vector<double> Order::getPriceSold(){
 		return price_sold;
 	}
 	
-	void Order::itemsPickedUp(vector<int> q){
+	void Order::itemsPickedUp(std::vector<int> q){
 		for (int i = 0; i < q.size(); i++){
 			quantities[i] -= q[i];
 		}
 		for (int i = 0; i < quantities.size(); i++){
 			if (quantities[i] == 0){
-				itemIDs.erase[i];
-				quantities[i];
-				price_sold[i];
+				itemIDs.erase(itemIDs.begin() + i);
+				quantities.erase(quantities.begin() + i);
+				price_sold.erase(price_sold.begin() + i);
 				continue;
 			}
 		}
 	}
 	
-	void Order::refundOrder(vector<int> q){
+	void Order::refundOrder(std::vector<int> q){
 		for (int i = 0; i < q.size(); i++){
 			quantities[i] -= q[i];
 		}
 		for (int i = 0; i < quantities.size(); i++){
 			if (quantities[i] == 0){
-				itemIDs.erase[i];
-				quantities[i];
-				price_sold[i];
+				itemIDs.erase(itemIDs.begin() + i);
+				quantities.erase(quantities.begin() + i);
+				price_sold.erase(price_sold.begin() + i);
 				continue;
 			}
 		}

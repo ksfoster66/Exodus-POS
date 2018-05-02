@@ -1,31 +1,33 @@
 This is a list of feature to be added, and anything that would have to be updated to support those features
 
-Inventory System: V.1 complete
+Inventory System: V.1.1 complete
+	V1 - Initial implementation
+	V1.1 - Changed the UPC to it's own class that acts as a fancy wrapper for a string
 
 Sales system: V.1
 	Needs to have added ability for order creation and record holding. Return ability to be designed and added
 
 Order System: V.1
-	Automated order system: V.1
+	Automated order generator system: V.1
 
-Customer Management: V.1 
+Customer Management: V.1.1
+	V1.1 - Changed phone number to a string 
 
-Employee Management: V.1
+Employee Management: V.1.1
+	V1.1 - Changed phone number to a string
 
 Report tracking: low priority
 
 GUI front end - A whole seperate system that sits on top of the back end. Prototype with a terminal based interface
 
-Terminal interface option - Test system to verify everything works before creating the GUI
+Terminal interface option - CLI V.1
 
 Things to be updated:
 	Inventory::removeItem - Once reports are implemented add expense tracking to this method
 	
 	Inventory::inv_management to be implemented once the report system is implemented
 	
-	Inventory::createOrder - Implement once orders are implemented
-	
-	Inventory - Add error handling
+	Inventory - Add an inventory ordering system
 	
 	Employee - Add a record of orders once order management is implemented
 	
@@ -42,6 +44,8 @@ Things to be updated:
 	Sales - When reporting and returns are added, add sales number tracking
 	
 	Order- Add the special and inventory order subclasses and update the manager and generator accordingly
+	
+	Add types of order to orders - Pickup, del, etc
 	
 	A system to handle dates properly
 	

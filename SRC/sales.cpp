@@ -1,12 +1,19 @@
 #include "sales.hpp"
+#include <iostream>
 
 	/*
 	Inventory* inv;
 	OrderManager* orderMgr;
 	CustManager* custMgr;
+	EmpManager* empMgr;
+	
+	OrderGenerator orderGen;
 	
 	Customer* cust;
 	Employee* emp;
+	
+	bool isCustSet;
+	bool isEmpSet;
 	
 	std::vector<int> ids;
 	std::vector<int> quantities;
@@ -30,17 +37,26 @@
 	*/
 
 	//Constructor
-	Sales::Sales(Inventory* i, OrderManager* m, CustManager* c, Employee* e, double localTaxRate){
+	Sales::Sales(Inventory* i, OrderManager* m, CustManager* c, EmpManager* e, OrderGenerator* o, double localTaxRate){
 		inv = i;
 		orderMgr = m;
 		custMgr = c;
-		emp = e;
+		empMgr = e;
 		
-		sale_type = 0;
+		orderGen = o;
 		
-		taxRate = localTaxRate;
+		isCustSet = false;
+		isEmpSet = false;
+		
+		sale_type = TAKE_WITH;
+		
+		tax_rate = localTaxRate;
 		
 		finalised = false;
+		subtotal = 0;
+		taxes = 0;
+		total = 0;
+		amount_owed = 0;
 	}
 	
 	//getters and setters
@@ -74,37 +90,47 @@
 	std::string Sales::getSaleType(){
 		switch(sale_type){
 			default:
-			case 0: return "Take with"
+			case 0: return "Take with";
 				break;
-			case 1: return "Pick up"
+			case 1: return "Pick up";
 				break;
-			case 2: "Delivery"
+			case 2: "Delivery";
 				break;
 		}
 	}
 	void Sales::setSaleType(int i){
 		if (finalised){return;}
 		
-		if (i < 3 || i > -1) sale_type = i;
-		else sale_type = 0;
+		
+		switch(i){
+			default:
+			case 0 : sale_type = TAKE_WITH;
+					break;
+			case 1 : sale_type = DELIVERY;
+					break;
+			case 2 : sale_type = PICK_UP;
+					break;
+		}
 	}
 	void Sales::setSaleType(std::string s){
 		if (finalised){return;}
 		
 		if(s == "TW"){
-			sale_type = 0;
+			sale_type = TAKE_WITH;
 		}else if(s == "PU"){
-			sale_type = 1;
+			sale_type = PICK_UP;
 		}else if(s == "DL"){
-			sale_type = 2;
+			sale_type = DELIVERY;
 		}else{
-			sale_type = 0;
+			sale_type = TAKE_WITH;
 		}
 	}
 	
 	//Clear
 	void Sales::reset(){
-		sale_type = 0;
+		sale_type = TAKE_WITH;
+		
+		isCustSet = false;
 		
 		ids.clear();
 		quantities.clear();
@@ -119,6 +145,7 @@
 	
 	//Item entry and modification
 	void Sales::enterItem(int i, int quant, double p){
+		
 		if (finalised){return;}
 		
 		int id;//Tthe item's id number
@@ -139,8 +166,10 @@
 		}
 		
 		int line= -1;
-		if (ids.empty()){}//If the checkout list is empty don't bother checking if the item is already in the list
+		if (ids.empty()){		}//If the checkout list is empty don't bother checking if the item is already in the list
+		
 		else{
+			
 			for (int i = 0; i < ids.size(); i++){//Checking if item is already in the list
 				if (id == ids[i]){
 					if (prices[i] == price)//If it is being sold for a different price don't add to it
@@ -158,14 +187,17 @@
 			quantities.push_back(quant);
 			prices.push_back(price);
 			ref.push_back(it);
+			item_total_prices.push_back(0.0);
 			line = ids.size() - 1;
+			std::cout << "Test 8b: Item added" << std::endl;
 		}
+		
 		calcLinePrice(line);
 		calcTotal();
 		
 	}
 	
-	void Sales::enterItem(string m, int quant, double p){
+	void Sales::enterItem(std::string m, int quant, double p){
 		if (finalised){return;}
 		
 		int id;//Tthe item's id number
@@ -213,40 +245,42 @@
 	
 	void Sales::changeQuantity(int line, int quantity){
 		if (finalised){return;}
+		int i = line -1;
+		quantities[i] = quantity;
 		
-		quantities[line] += quant;
-		
-		calcLinePrice(line);
+		calcLinePrice(i);
 		calcTotal();
 		
 	}
 	void Sales::removeItem(int line){
 		if (finalised){return;}
 		
-		ids.erase(ids.begin() + line);
-		quantities.erase(quantities.begin() + line);
-		prices.erase(prices.begin() + line);
-		item_total_prices.erase(item_total_prices.begin() + line);
-		ref.erase(ref.begin() + line);		
+		int i = line - 1;
+		
+		ids.erase(ids.begin() + i);
+		quantities.erase(quantities.begin() + i);
+		prices.erase(prices.begin() + i);
+		item_total_prices.erase(item_total_prices.begin() + i);
+		ref.erase(ref.begin() + i);		
 				
 		calcTotal();
 	}
 	void Sales::changePrice(int line, double price){
 		if (finalised){return;}
-		
-		prices[line] += price;
-		calcLinePrice(line);
+		int i = line -1;
+		prices[i] = price;
+		calcLinePrice(i);
 		calcTotal();
 	}
 	
 	void Sales::calcLinePrice(int line){
-		item_total_price[line] = price[line] * quantities[line];
+		item_total_prices[line] = prices[line] * quantities[line];
 	}
 	
 	void Sales::calcTotal(){
 		subtotal = 0;
-		for (int i = 0; i < item_total_price.size(); i++){
-			subtotal += item_total_price[i];
+		for (int i = 0; i < item_total_prices.size(); i++){
+			subtotal += item_total_prices[i];
 		}
 		taxes = subtotal * tax_rate;
 		total = subtotal + taxes;
@@ -254,12 +288,16 @@
 	
 	//Payment methods
 	double Sales::payWithCash(double amount){
+		if(!isCustSet) return -1.00;
+		if(!isEmpSet) return -2.00;
 		finalised = true;
 		
 		total -= amount;
 		return total;
 	}
 	double Sales::payWithCheck(double amount){
+		if(!isCustSet) return -1.00;
+		if(!isEmpSet) return -2.00;
 		finalised = true;
 		
 		//check processing mechanism
@@ -268,6 +306,8 @@
 		return total;
 	}
 	double Sales::payWithDebit(double amount){
+		if(!isCustSet) return -1.00;
+		if(!isEmpSet) return -2.00;
 		finalised = true;
 		
 		//debit card handling mechanism
@@ -276,22 +316,47 @@
 		return total;
 	}
 	double Sales::payWithCredit(double amount){
+		if(!isCustSet) return -1.00;
+		if(!isEmpSet) return -2.00;
 		finalised = true;
 		
 		//credit handling mechanism abstraction blah blah blah
 		
 		total -= amount;
+		
+		if( total <= 0){
+			createOrder();
+		}
+		
 		return total;
 	}
 	
 	//Order generation
-	
-	void Sales::custLookUp(int id){
-		cust = custMgr.getCustomer(id);
+	bool Sales::isCust(){
+		return isCustSet;
 	}
 	
-	//TBI once the Order Generator is implemented
+	void Sales::custLookUp(int id){
+		cust = custMgr->getCustomer(id);
+		isCustSet = true;
+	}
+	
+	void Sales::empLookUp(int id){
+		emp = empMgr->getEmployee(id);
+		isEmpSet = true;
+	}
+	
+	void Sales::createOrder(){
+		orderGen->createOrder(ids, quantities, prices, cust, emp);
+	}
 	
 	//input and display
-	void Sales::run();
-	void Sales::display();
+	void Sales::display(){
+		std::cout << "Line\tItem ID\tQuantity\tPrice\tTotal" << std::endl;
+		for (int i = 0; i < ids.size(); i++){
+			std::cout << i + 1 << "\t" << ids[i] << "\t" << quantities[i] << "\t" << prices[i] << "\t" << item_total_prices[i]<< std::endl;
+		}
+		std::cout <<"\t\t\tSubtotal:\t" << subtotal <<"\n\t\t\tTaxes\t"<<taxes<<"\n\t\t\tTotal\t"<<total<<std::endl; 
+	}
+	
+	
