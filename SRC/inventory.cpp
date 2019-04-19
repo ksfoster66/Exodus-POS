@@ -39,6 +39,14 @@
 	
 	//void inv_maintenance();
 	//To be run at the end of business, updates all records
+	Inventory::~Inventory(){
+		
+		for (auto it = inv.begin(); it != inv.end(); it++){
+			delete it->second;
+			inv.erase(it);
+		}
+	
+	}
 	
 	void Inventory::updateSales(int n, double a, double v){//N = number sold, a = actual value of sold items, v - value items were sold at
 		total_count -= n;
@@ -96,6 +104,8 @@
 		UPC_listing.erase(i->getUPC());//gets the string from the UPC object
 		model_listing.erase(i->getModelNumber());
 		inv.erase(ID);
+		
+		delete i;
 	}
 	void Inventory::addToCount(int itemID, int quantity){
 	//Add to the available count of an item //Add error handling

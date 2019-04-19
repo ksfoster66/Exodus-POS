@@ -45,6 +45,8 @@ public:
 	
 	Item(UPC* UPC_code, std::string model, std::string name, std::string description, std::string type, std::string supplier, std::string stock_code, double current_price, double MSRP, double cost);
 	
+	~Item();
+	
 	//Getters and setters
 	std::string getName();
 	
@@ -111,17 +113,17 @@ public:
 	
 	void dec();
 	
-	Item operator++();
+	void operator++();
 	
-	Item operator++(int);
+	void operator++(int);
 	
-	Item operator--();
+	void operator--();
 	
-	Item operator--(int);
+	void operator--(int);
 	
-	Item operator+=(int n);
+	void operator+=(int n);
 	
-	Item operator -=(int n);
+	void operator -=(int n);
 	
 	void sold(int n=1);
 	

@@ -6,6 +6,14 @@
 	
 	//EmpManager(){} //Already implemented
 	
+	EmpManager::~EmpManager(){
+		for (auto it = employee_map.begin(); it != employee_map.end(); it++){
+			delete it->second;
+		
+			employee_map.erase(it);
+		}
+	}
+	
 	//Getters and setters
 	Employee* EmpManager::getEmployee(int id){
 		return employee_map[id];
@@ -30,6 +38,9 @@
 	}
 	
 	void EmpManager::removeEmployee(int ID){
+		Employee* e = employee_map[ID];
+		delete e;
+		
 		employee_map.erase(ID);
 		num_employed--;
 	}

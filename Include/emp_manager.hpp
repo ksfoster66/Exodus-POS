@@ -23,6 +23,8 @@ public:
 		num_employed = 0;
 	}
 	
+	~EmpManager();
+	
 	//Getters and setters
 	Employee* getEmployee(int id);
 	

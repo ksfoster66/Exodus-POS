@@ -23,6 +23,8 @@ public:
 		num_customers = 0;
 	}
 	
+	~CustManager();
+	
 	Customer* getCustomer(int ID);//Gets customer using their customer ID.
 	
 	std::vector<Customer*> getCustomersByName(std::string name); //Gets a list of customers based on their name
@@ -31,11 +33,11 @@ public:
 	
 	int getNumCustomers();
 	
-	void addCustomer(Customer *c);
+	void addCustomer(Customer *c);//Add a customer by passing the referenc
 	
-	void removeCustomer(int id);
+	void removeCustomer(int id);//Remove the customer from the map listing
 	
-	bool contains(int id);
+	bool contains(int id);//Check if a customer exists in the listing
 	
 };
 

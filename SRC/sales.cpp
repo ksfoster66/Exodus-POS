@@ -97,6 +97,8 @@
 			case 2: "Delivery";
 				break;
 		}
+		
+		return "Take with";
 	}
 	void Sales::setSaleType(int i){
 		if (finalised){return;}

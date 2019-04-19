@@ -47,6 +47,8 @@ public:
 	//Constructor
 	Inventory(){};
 	
+	~Inventory();
+	
 	//Methods
 	//Modifiers
 	

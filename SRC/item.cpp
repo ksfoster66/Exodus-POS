@@ -79,6 +79,10 @@
 				
 	}
 	
+	Item::~Item(){
+		delete upc;
+	}
+	
 	//Modifiers
 	std::string Item::getName(){
 		return name;
@@ -225,32 +229,32 @@
 		available--;
 	}
 	
-	Item Item::operator++(){
+	void Item::operator++(){
 		total_count++;
 		available++;
 	}
 	
-	Item Item::operator++(int){
+	void Item::operator++(int){
 		total_count++;
 		available++;
 	}
 	
-	Item Item::operator--(){
+	void Item::operator--(){
 		total_count--;
 		available--;
 	}
 	
-	Item Item::operator--(int){
+	void Item::operator--(int){
 		total_count--;
 		available--;
 	}
 	
-	Item Item::operator+=(int n){
+	void Item::operator+=(int n){
 		total_count+=n;
 		available+=n;
 	}
 	
-	Item Item::operator -=(int n){
+	void Item::operator-=(int n){
 		total_count-=n;
 		available-=n;
 	}

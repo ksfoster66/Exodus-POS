@@ -5,6 +5,15 @@
 	
 	//int num_customers = 0;//Total number of customers in the system
 	
+	CustManager::~CustManager(){
+	
+		for(std::map<int, Customer*>::iterator it = customer_listing.begin(); it != customer_listing.end(); it++){
+			delete it->second;
+			customer_listing.erase(it);
+		}
+	
+	}
+	
 	Customer* CustManager::getCustomer(int ID){//Gets customer using their customer ID.
 		return customer_listing[ID];
 	}
